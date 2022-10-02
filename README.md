@@ -1,4 +1,4 @@
-# Terraform modules - AWS DNS Zone
+# Terraform modules - DNS Zone
 
 
 <!-- BEGIN_TF_DOCS -->
