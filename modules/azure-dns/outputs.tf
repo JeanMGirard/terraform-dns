@@ -15,7 +15,7 @@ output "zone_id" {
   value = local.out_zone_id
 }
 output "is_private" {
-  value = false
+  value = var.is_private
 }
 output "records" {
   value = local.records

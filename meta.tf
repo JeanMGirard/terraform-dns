@@ -5,58 +5,13 @@
   *****************************************************
 */
 
-variable "enabled" { default = true }
-variable "name" { default = null }
-variable "description" { default = null }
-variable "stage" { default = null }
-variable "tags" { default = null }
-variable "attributes" { default = null }
-variable "flags" { default = null }
-variable "iam_path" { default = null }
-variable "random" { default = null }
-variable "region" { default = null }
-variable "account" { default = null }
-variable "environment" { default = null }
-
-
 variable "meta" {
-  type = any
-  default = {
-    # Identifiers
-    tenant    = null
-    stack     = null
-    namespace = null
-    project   = null
-    module    = null
-    # Deployment
-    environment = null
-    region      = null
-    stage       = null
-    # Description
-    name        = null
-    description = null
-    # Configs
-    enabled      = null
-    iam_path     = null
-    attributes   = {}
-    default_tags = {}
-    tags         = {}
-    flags        = []
-  }
+  type    = any
+  default = {}
 }
-
 module "meta" {
   source = "git@github.com:JeanMGirard/terraform-meta.git"
   meta   = var.meta
-
-  enabled     = var.enabled
-  name        = var.name
-  description = var.description
-  stage       = var.stage
-  tags        = var.tags
-  attributes  = var.attributes
-  flags       = var.flags
-  iam_path    = var.iam_path
 }
 locals {
   meta = module.meta

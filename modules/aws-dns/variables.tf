@@ -22,7 +22,7 @@ variable "parent_zone_name" {
   default     = null
   description = "Name of the hosted zone to contain this record (or specify `parent_zone_id`)"
 }
-variable "parent_zone_record_enabled" {
+variable "create_parent_zone_record" {
   type        = bool
   default     = null
   description = "Whether to create the NS record on the parent zone. Useful for creating a cluster zone across accounts. `var.parent_zone_name` required if set to false."
@@ -36,13 +36,18 @@ variable "alt_names" {
   default = []
 }
 variable "records" {
-  type = map(object({
-    name            = string
-    type            = string # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
-    ttl             = string
-    allow_overwrite = bool
-    records         = list(string)
-  }))
+  type = any
+  #  type = map(object({
+  #    name            = string
+  #    type            = string # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
+  #    ttl             = string
+  #    allow_overwrite = bool
+  #    records         = list(string)
+  #  }))
   default     = {}
   description = "Name of the hosted zone to contain this record (or specify `parent_zone_id`)"
+}
+variable "is_private" {
+  type    = bool
+  default = false
 }

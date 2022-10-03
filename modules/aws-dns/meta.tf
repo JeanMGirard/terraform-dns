@@ -1,6 +1,6 @@
 
 variable "meta" {
-  type = any
+  type    = any
   default = {}
 }
 locals {

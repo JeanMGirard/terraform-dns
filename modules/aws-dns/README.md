@@ -19,7 +19,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cert"></a> [cert](#module\_cert) | ../dns-tls-cert | n/a |
+| <a name="module_cert"></a> [cert](#module\_cert) | ../aws-tls-cert | n/a |
 
 ## Resources
 
@@ -37,11 +37,13 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alt_names"></a> [alt\_names](#input\_alt\_names) | n/a | `list(string)` | `[]` | no |
+| <a name="input_create_parent_zone_record"></a> [create\_parent\_zone\_record](#input\_create\_parent\_zone\_record) | Whether to create the NS record on the parent zone. Useful for creating a cluster zone across accounts. `var.parent_zone_name` required if set to false. | `bool` | `null` | no |
 | <a name="input_generate_cert"></a> [generate\_cert](#input\_generate\_cert) | n/a | `bool` | `false` | no |
+| <a name="input_is_private"></a> [is\_private](#input\_is\_private) | n/a | `bool` | `false` | no |
+| <a name="input_meta"></a> [meta](#input\_meta) | n/a | `any` | `{}` | no |
 | <a name="input_parent_zone_id"></a> [parent\_zone\_id](#input\_parent\_zone\_id) | ID of the hosted zone to contain this record  (or specify `parent_zone_name`) | `string` | `null` | no |
 | <a name="input_parent_zone_name"></a> [parent\_zone\_name](#input\_parent\_zone\_name) | Name of the hosted zone to contain this record (or specify `parent_zone_id`) | `string` | `null` | no |
-| <a name="input_parent_zone_record_enabled"></a> [parent\_zone\_record\_enabled](#input\_parent\_zone\_record\_enabled) | Whether to create the NS record on the parent zone. Useful for creating a cluster zone across accounts. `var.parent_zone_name` required if set to false. | `bool` | `null` | no |
-| <a name="input_records"></a> [records](#input\_records) | Name of the hosted zone to contain this record (or specify `parent_zone_id`) | <pre>map(object({<br>		name            = string<br>		type            = string # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.<br>		ttl             = string<br>		allow_overwrite = bool<br>		records         = list(string)<br>	}))</pre> | `{}` | no |
+| <a name="input_records"></a> [records](#input\_records) | Name of the hosted zone to contain this record (or specify `parent_zone_id`) | `any` | `{}` | no |
 | <a name="input_zone_alias"></a> [zone\_alias](#input\_zone\_alias) | n/a | `string` | `""` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | Zone id. Do not create the zone if specified | `string` | `null` | no |
 | <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | Zone name | `string` | `"${name}.${stage}.${parent_zone_name}"` | no |
@@ -51,6 +53,7 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_fqdn"></a> [fqdn](#output\_fqdn) | Fully-qualified domain name |
+| <a name="output_meta"></a> [meta](#output\_meta) | n/a |
 | <a name="output_parent_zone_id"></a> [parent\_zone\_id](#output\_parent\_zone\_id) | ID of the hosted zone to contain this record |
 | <a name="output_parent_zone_name"></a> [parent\_zone\_name](#output\_parent\_zone\_name) | Name of the hosted zone to contain this record |
 | <a name="output_records"></a> [records](#output\_records) | DNS Records. |

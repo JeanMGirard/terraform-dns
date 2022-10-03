@@ -34,18 +34,17 @@ resource "aws_route53_record" "soa" {
 resource "aws_route53_record" "records" {
   for_each        = var.records
   zone_id         = join("", aws_route53_zone.default.*.id)
-  name            = each.value.name
-  allow_overwrite = each.value.allow_overwrite
-  type            = each.value.type
-  ttl             = each.value.ttl
-  records         = each.value.records
+  name            = lookup(each.value, "name", null)
+  allow_overwrite = lookup(each.value, "allow_overwrite", null)
+  type            = lookup(each.value, "type", null)
+  ttl             = lookup(each.value, "ttl", null)
+  records         = lookup(each.value, "records", null)
 }
 
 module "cert" {
   count      = var.generate_cert ? 1 : 0
-  enabled    = var.generate_cert
   depends_on = [aws_route53_zone.default]
-  source     = "../dns-tls-cert"
+  source     = "../aws-tls-cert"
   zone_name  = var.zone_name
   alt_names  = var.alt_names
   meta       = local.meta

@@ -34,6 +34,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_alt_names"></a> [alt\_names](#input\_alt\_names) | n/a | `list(string)` | `[]` | no |
+| <a name="input_meta"></a> [meta](#input\_meta) | n/a | `any` | `{}` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | n/a | `string` | `null` | no |
 | <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | n/a | `string` | `null` | no |
 
@@ -41,6 +42,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_meta"></a> [meta](#output\_meta) | n/a |
 | <a name="output_result"></a> [result](#output\_result) | n/a |
 | <a name="output_validation"></a> [validation](#output\_validation) | n/a |
 <!-- END_TF_DOCS -->

@@ -1,5 +1,12 @@
+variable "enabled" {
+  type    = bool
+  default = true
+}
 
-
+variable "create_parent_zone_record" {
+  type    = bool
+  default = false
+}
 variable "resource_group_id" {
   type    = string
   default = null
@@ -28,26 +35,25 @@ variable "dns_provider" {
     error_message = "Allowed DNS providers are: `aws`, `azure` and `gcp`."
   }
 }
+variable "zone_alias" {
+  type    = string
+  default = null
+}
 variable "zone_id" {
-  type = string
+  type    = string
   default = null
 }
 variable "zone_name" {
-  type = string
+  type    = string
   default = null
 }
-
-
-
-
-variable "zone" {
-  type = object({
-    alias     = string
-    name      = string
-    id        = string
-    alt_names = list(string)
-  })
+variable "alt_names" {
+  type    = list(string)
+  default = []
 }
+
+
+
 
 
 
@@ -75,19 +81,20 @@ variable "is_private" {
 
 
 variable "records" {
-  type = map(object({
-    name            = optional(string)
-    type            = optional(string) # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
-    ttl             = optional(number)
-    allow_overwrite = optional(bool)
-    records         = optional(list(any))
-  }))
+  type = any
+  #  type = map(object({
+  #    name            = optional(string)
+  #    type            = optional(string) # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
+  #    ttl             = optional(number)
+  #    allow_overwrite = optional(bool)
+  #    records         = optional(list(any))
+  #  }))
   default     = {}
   description = "Name of the hosted zone to contain this record (or specify `parent_zone_id`)"
   validation {
     condition = alltrue([for record in values(var.records) : (can(lookup(record, "type", null))
-    ? contains(["A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"], lookup(record, "type", "CNAME"))
-    : true
+      ? contains(["A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"], lookup(record, "type", "CNAME"))
+      : true
     )])
     error_message = "Invalid record type found, allowed values are A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT."
   }

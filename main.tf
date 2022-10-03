@@ -1,40 +1,41 @@
-
+terraform {
+  required_version = ">= 1.1"
+}
 
 module "aws" {
-  count = local.is_aws ? 1 : 0
-  source  = "./modules/aws-dns"
-  meta    = local.meta
-  enabled = local.is_aws
+  count      = local.is_aws ? 1 : 0
+  source     = "./modules/aws-dns"
+  meta       = local.meta
+  is_private = var.is_private
 
-  parent_zone_id             = local.parent.id
-  parent_zone_name           = local.parent.name
-  parent_zone_record_enabled = local.parent.add_record
+  parent_zone_id            = local.parent_id
+  parent_zone_name          = local.parent_name
+  create_parent_zone_record = local.parent_provider == "aws" ? var.create_parent_zone_record : false
 
-  zone_id       = local.zone.id
-  zone_name     = local.zone.name
-  alt_names     = local.zone.alt_names
-  zone_alias    = local.zone.alias
+  zone_id       = local.zone_id
+  zone_name     = local.zone_name
+  alt_names     = var.alt_names
+  zone_alias    = local.zone_alias
   generate_cert = var.generate_cert
   records       = local.records
 }
 
 
 module "azure" {
-  count = local.is_az ? 1 : 0
-  source  = "./modules/azure-dns"
-  meta    = local.meta
-  enabled = local.is_az
+  count      = local.is_az ? 1 : 0
+  source     = "./modules/azure-dns"
+  meta       = local.meta
   is_private = var.is_private
 
-  resource_group_id = var.resource_group_id
-  create_zone = local.is_az ? var.create_zone : false
-  zone_id     = local.is_az ? local.zone.id : null
-  zone_name   = local.is_az ? local.zone.name : null
-  records     = local.is_az ? local.records : {}
+  parent_zone_id            = local.parent_id
+  parent_zone_name          = local.parent_name
+  create_parent_zone_record = local.parent_provider == "azure" ? var.create_parent_zone_record : false
 
-  parent_zone_id             = local.is_az ? local.parent.id : null
-  parent_zone_name           = local.is_az ? local.parent.name : null
-  parent_zone_record_enabled = local.is_az ? local.parent.add_record : null
+  resource_group_id = var.resource_group_id
+  create_zone       = var.create_zone
+  zone_id           = local.zone_id
+  zone_name         = local.zone_name
+  records           = local.records
 }
 
 

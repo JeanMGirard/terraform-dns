@@ -1,22 +1,20 @@
 locals {
-  enabled = var.enabled && can(coalesce(var.zone.name))
+  enabled = var.enabled && can(coalesce(var.zone_name == null ? var.zone_id : var.zone_name))
   is_aws  = local.enabled && lower(var.dns_provider) == "aws"
   is_az   = local.enabled && lower(var.dns_provider) == "azure"
   is_gce  = local.enabled && lower(var.dns_provider) == "gce"
 
   has_parent = anytrue([var.parent_zone_id != null, var.parent_zone_name != null])
-  parent = {
-    id         = var.parent_zone_id
-    name       = var.parent_zone_name
-    add_record = true
-    provider   = var.parent_zone_provider == null ? var.dns_provider : var.parent_zone_provider
-  }
-  zone = {
-    alias     = lookup(var.zone, "alias", null)
-    name      = lookup(var.zone, "name", null)
-    id        = lookup(var.zone, "id", null)
-    alt_names = lookup(var.zone, "alt_names", [])
-    provider  = lookup(var.zone, "provider", null)
-  }
+
+  parent_id       = var.parent_zone_id
+  parent_name     = var.parent_zone_name
+  parent_provider = var.parent_zone_provider == null ? var.dns_provider : var.parent_zone_provider
+
+  zone_alias     = var.zone_alias
+  zone_name      = var.zone_name
+  zone_id        = var.zone_id
+  zone_alt_names = var.alt_names
+  zone_provider  = var.dns_provider
+
   records = var.records
 }
