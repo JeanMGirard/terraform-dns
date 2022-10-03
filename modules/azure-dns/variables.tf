@@ -1,9 +1,9 @@
 
-variable "resource_group_name" {
+variable "resource_group_id" {
   type    = string
   default = null
 }
-variable "resource_group_id" {
+variable "resource_group_name" {
   type    = string
   default = null
 }

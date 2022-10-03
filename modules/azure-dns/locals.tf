@@ -1,7 +1,7 @@
 
 
 locals {
-  resource_group = var.resource_group_id == null ? null : regex("/subscriptions/(?P<subscription_id>[^\\/]*)/resourceGroups/(?P<name>[^\\/]*)", var.resource_group_id)
+  resource_group = var.resource_group_id == null ? { name = var.resource_group_name } : regex("/subscriptions/(?P<subscription_id>[^\\/]*)/resourceGroups/(?P<name>[^\\/]*)", var.resource_group_id)
   parent_zone    = var.parent_zone_id == null ? null : regex("/subscriptions/(?P<subscription_id>[^\\/]*)/resourceGroups/(?P<resource_group_name>[^\\/]*)/providers/Microsoft.Network/dnsZones/(?P<name>[^\\/]*)", var.parent_zone_id)
   dns_zone = var.zone_id == null ? null : regex((local.is_private_zone
     ? "/subscriptions/(?P<subscription_id>[^\\/]*)/resourceGroups/(?P<resource_group_name>[^\\/]*)/providers/Microsoft.Network/dnsZones/(?P<name>[^\\/]*)"

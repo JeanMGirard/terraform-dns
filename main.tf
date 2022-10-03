@@ -32,6 +32,8 @@ module "azure" {
   create_parent_zone_record = local.parent_provider == "azure" ? var.create_parent_zone_record : false
 
   resource_group_id = var.resource_group_id
+  resource_group_name = var.resource_group_name
+
   create_zone       = var.create_zone
   zone_id           = local.zone_id
   zone_name         = local.zone_name

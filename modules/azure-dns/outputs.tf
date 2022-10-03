@@ -8,6 +8,9 @@ locals {
 output "resource_group_name" {
   value = local.out_resource_group_name
 }
+output "resource_group_id" {
+  value = local.out_resource_group_name
+}
 output "zone_name" {
   value = local.out_zone_name
 }
