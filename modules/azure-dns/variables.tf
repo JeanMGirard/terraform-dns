@@ -1,9 +1,6 @@
 
+
 variable "resource_group_id" {
-  type    = string
-  default = null
-}
-variable "resource_group_name" {
   type    = string
   default = null
 }
@@ -18,11 +15,11 @@ variable "is_private" {
 }
 
 variable "zone_id" {
-  type    = string
+  type = string
   default = null
 }
 variable "zone_name" {
-  type    = string
+  type = string
   default = null
 }
 
@@ -61,8 +58,4 @@ variable "parent_zone_name" {
   default     = null
   description = "ID of the hosted zone to contain this record  (or specify `parent_zone_name`)"
 }
-variable "create_parent_zone_record" {
-  type        = bool
-  default     = false
-  description = "Whether to create the NS record on the parent zone. Useful for creating a cluster zone across accounts. `var.parent_zone_name` required if set to false."
-}
+
