@@ -6,7 +6,7 @@
 
 resource "azurerm_dns_ns_record" "parent" {
   depends_on          = [azurerm_dns_zone.main]
-  count               = local.is_public_zone ? length(data.azurerm_dns_zone.parent) : 0
+  count               = (local.is_public_zone && var.create_parent_zone_record) ? length(data.azurerm_dns_zone.parent) : 0
   zone_name           = one(data.azurerm_dns_zone.parent.*.name)
   resource_group_name = one(data.azurerm_dns_zone.parent.*.resource_group_name)
   tags                = local.tags

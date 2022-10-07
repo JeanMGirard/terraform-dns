@@ -63,3 +63,7 @@ variable "parent_zone_name" {
   description = "ID of the hosted zone to contain this record  (or specify `parent_zone_name`)"
 }
 
+variable "create_parent_zone_record" {
+  type        = bool
+  default     = true
+}
