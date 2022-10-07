@@ -1,4 +1,10 @@
 
+
+data "azurerm_resource_group" "main" {
+  count = var.resource_group_name == null ? 0 : 1
+  name  = var.resource_group_name
+}
+
 data "azurerm_dns_zone" "parent" {
   count = var.parent_zone_name == null ? 0 : 1
   name  = var.parent_zone_name
