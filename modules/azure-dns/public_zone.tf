@@ -21,7 +21,7 @@ resource "azurerm_dns_zone" "main" {
   depends_on          = [data.azurerm_dns_zone.parent]
   count               = local.create_public_zone ? 1 : 0
   name                = local.zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 }
 
@@ -32,7 +32,7 @@ resource "azurerm_dns_a_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.a_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name    = lookup(local.records[local.a_keys[count.index]], "name", "")
@@ -45,7 +45,7 @@ resource "azurerm_dns_aaaa_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.aaaa_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name    = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
@@ -57,7 +57,7 @@ resource "azurerm_dns_caa_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.caa_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name = lookup(local.records[local.caa_keys[count.index]], "name", "")
@@ -77,7 +77,7 @@ resource "azurerm_dns_cname_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.cname_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name   = lookup(local.records[local.cname_keys[count.index]], "name", "")
@@ -89,7 +89,7 @@ resource "azurerm_dns_mx_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.mx_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
   name                = lookup(local.records[local.mx_keys[count.index]], "name", "")
 
@@ -108,7 +108,7 @@ resource "azurerm_dns_ns_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.ns_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name    = lookup(local.records[local.ns_keys[count.index]], "name", "")
@@ -120,7 +120,7 @@ resource "azurerm_dns_ptr_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.ptr_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.tags
 
   name    = lookup(local.records[local.ptr_keys[count.index]], "name", "")
@@ -132,7 +132,7 @@ resource "azurerm_dns_srv_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.srv_keys) : 0
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   name                = lookup(local.records[local.srv_keys[count.index]], "name", "")
   tags                = local.tags
 
@@ -154,7 +154,7 @@ resource "azurerm_dns_txt_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.txt_keys) : 0 # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
   zone_name           = local.out_zone_name
-  resource_group_name = local.resource_group_name
+  resource_group_name = lookup(local.resource_group, "name", null)
   name                = lookup(local.records[local.txt_keys[count.index]], "name", "")
   tags                = local.tags
 
