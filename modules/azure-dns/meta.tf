@@ -23,8 +23,9 @@ locals {
   ns              = lookup(local.meta, "ns", "")
   stack           = lookup(local.meta, "stack", "")
   component       = lookup(local.meta, "component", "")
-  default_tags    = lookup(local.meta, "default_tags", {})
-  tags            = lookup(local.meta, "tags", {})
+  tags         = lookup(local.meta, "tags", {})
+  default_tags = lookup(local.meta, "default_tags", {})
+  all_tags     = lookup(local.meta, "all_tags", merge(local.default_tags, local.tags))
 }
 
 output "meta" {

@@ -10,7 +10,7 @@ resource "azurerm_private_dns_zone" "main" {
   count               = local.create_private_zone ? 1 : 0
   name                = local.zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
 }
 
 
@@ -21,7 +21,7 @@ resource "azurerm_private_dns_a_record" "main" {
   count               = local.is_private_zone ? length(local.a_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = lookup(local.records[local.a_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
@@ -34,7 +34,7 @@ resource "azurerm_private_dns_aaaa_record" "main" {
   count               = local.is_private_zone ? length(local.aaaa_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
@@ -46,7 +46,7 @@ resource "azurerm_private_dns_cname_record" "main" {
   count               = local.is_private_zone ? length(local.cname_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
 
   name   = lookup(local.records[local.cname_keys[count.index]], "name", "")
   ttl    = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
@@ -58,7 +58,7 @@ resource "azurerm_private_dns_mx_record" "main" {
   count               = local.is_private_zone ? length(local.mx_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
   name                = lookup(local.records[local.mx_keys[count.index]], "name", "")
 
   ttl = lookup(local.records[local.mx_keys[count.index]], "ttl", 3600)
@@ -78,7 +78,7 @@ resource "azurerm_private_dns_ptr_record" "main" {
   count               = local.is_private_zone ? length(local.ptr_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = lookup(local.records[local.ptr_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.ptr_keys[count.index]], "ttl", 300)
@@ -91,7 +91,7 @@ resource "azurerm_private_dns_srv_record" "main" {
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
   name                = lookup(local.records[local.srv_keys[count.index]], "name", "")
-  tags                = local.tags
+  tags                = local.all_tags
 
   ttl = lookup(local.records[local.srv_keys[count.index]], "ttl", 300)
 
@@ -113,7 +113,7 @@ resource "azurerm_private_dns_txt_record" "main" {
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name
   name                = lookup(local.records[local.txt_keys[count.index]], "name", "")
-  tags                = local.tags
+  tags                = local.all_tags
 
   ttl = lookup(local.records[local.txt_keys[count.index]], "ttl", 3600)
 
