@@ -28,6 +28,7 @@ resource "azurerm_dns_zone" "main" {
 
 
 # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
+//noinspection ConflictingProperties
 resource "azurerm_dns_a_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.a_keys) : 0
@@ -37,10 +38,11 @@ resource "azurerm_dns_a_record" "main" {
 
   name    = lookup(local.records[local.a_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.a_keys[count.index]], "records", [])
+  records = lookup(local.records[local.a_keys[count.index]], "records", null)
+  target_resource_id = lookup(local.records[local.a_keys[count.index]], "resource_id", null)
 }
 
-
+//noinspection ConflictingProperties
 resource "azurerm_dns_aaaa_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.aaaa_keys) : 0
@@ -50,7 +52,8 @@ resource "azurerm_dns_aaaa_record" "main" {
 
   name    = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.aaaa_keys[count.index]], "records", [])
+  records = lookup(local.records[local.aaaa_keys[count.index]], "records", null)
+  target_resource_id = lookup(local.records[local.aaaa_keys[count.index]], "resource_id", null)
 }
 
 resource "azurerm_dns_caa_record" "main" {
@@ -73,6 +76,7 @@ resource "azurerm_dns_caa_record" "main" {
   }
 }
 
+//noinspection ConflictingProperties
 resource "azurerm_dns_cname_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.cname_keys) : 0
@@ -82,7 +86,8 @@ resource "azurerm_dns_cname_record" "main" {
 
   name   = lookup(local.records[local.cname_keys[count.index]], "name", "")
   ttl    = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
-  record = one(lookup(local.records[local.cname_keys[count.index]], "records", []))
+  record = one(lookup(local.records[local.cname_keys[count.index]], "records", null))
+  target_resource_id = lookup(local.records[local.cname_keys[count.index]], "resource_id", null)
 }
 
 resource "azurerm_dns_mx_record" "main" {
