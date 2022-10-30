@@ -22,7 +22,7 @@ data "azurerm_dns_zone" "main" {
   }
 }
 data "azurerm_private_dns_zone" "main" {
-  count = local.is_private_zone ? 1 : 0
+  count               = local.is_private_zone ? 1 : 0
   depends_on          = [azurerm_private_dns_zone.main]
   name                = var.zone_name
   resource_group_name = lookup(local.resource_group, "name", null)

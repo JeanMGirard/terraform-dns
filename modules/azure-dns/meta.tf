@@ -8,7 +8,7 @@ variable "meta" {
   default = {}
 }
 module "meta" {
-  source  = "git::ssh://git@gitlab.com/Jean.M.Girard/libs/terraform/meta.git"
+  source = "git::ssh://git@gitlab.com/Jean.M.Girard/libs/terraform/meta.git"
   meta   = var.meta
 }
 locals {
@@ -23,9 +23,9 @@ locals {
   ns              = lookup(local.meta, "ns", "")
   stack           = lookup(local.meta, "stack", "")
   component       = lookup(local.meta, "component", "")
-  tags         = lookup(local.meta, "tags", {})
-  default_tags = lookup(local.meta, "default_tags", {})
-  all_tags     = lookup(local.meta, "all_tags", merge(local.default_tags, local.tags))
+  tags            = lookup(local.meta, "tags", {})
+  default_tags    = lookup(local.meta, "default_tags", {})
+  all_tags        = lookup(local.meta, "all_tags", merge(local.default_tags, local.tags))
 }
 
 output "meta" {

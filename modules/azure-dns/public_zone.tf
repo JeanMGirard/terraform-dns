@@ -36,9 +36,9 @@ resource "azurerm_dns_a_record" "main" {
   resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.all_tags
 
-  name    = lookup(local.records[local.a_keys[count.index]], "name", "")
-  ttl     = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.a_keys[count.index]], "records", null)
+  name               = lookup(local.records[local.a_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
+  records            = lookup(local.records[local.a_keys[count.index]], "records", null)
   target_resource_id = lookup(local.records[local.a_keys[count.index]], "resource_id", null)
 }
 
@@ -50,9 +50,9 @@ resource "azurerm_dns_aaaa_record" "main" {
   resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.all_tags
 
-  name    = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
-  ttl     = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.aaaa_keys[count.index]], "records", null)
+  name               = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
+  records            = lookup(local.records[local.aaaa_keys[count.index]], "records", null)
   target_resource_id = lookup(local.records[local.aaaa_keys[count.index]], "resource_id", null)
 }
 
@@ -84,9 +84,9 @@ resource "azurerm_dns_cname_record" "main" {
   resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.all_tags
 
-  name   = lookup(local.records[local.cname_keys[count.index]], "name", "")
-  ttl    = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
-  record = one(lookup(local.records[local.cname_keys[count.index]], "records", null))
+  name               = lookup(local.records[local.cname_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
+  record             = one(lookup(local.records[local.cname_keys[count.index]], "records", null))
   target_resource_id = lookup(local.records[local.cname_keys[count.index]], "resource_id", null)
 }
 

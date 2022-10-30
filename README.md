@@ -41,6 +41,7 @@ No resources.
 | <a name="input_parent_zone_provider"></a> [parent\_zone\_provider](#input\_parent\_zone\_provider) | ID of the hosted zone to contain this record  (or specify `parent_zone_name`) | `string` | `null` | no |
 | <a name="input_records"></a> [records](#input\_records) | Name of the hosted zone to contain this record (or specify `parent_zone_id`) | `any` | `{}` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | n/a | `string` | `null` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | n/a | `string` | `null` | no |
 | <a name="input_zone_alias"></a> [zone\_alias](#input\_zone\_alias) | n/a | `string` | `null` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | n/a | `string` | `null` | no |
 | <a name="input_zone_name"></a> [zone\_name](#input\_zone\_name) | n/a | `string` | `null` | no |

@@ -19,11 +19,11 @@ variable "is_private" {
 }
 
 variable "zone_id" {
-  type = string
+  type    = string
   default = null
 }
 variable "zone_name" {
-  type = string
+  type    = string
   default = null
 }
 
@@ -64,6 +64,6 @@ variable "parent_zone_name" {
 }
 
 variable "create_parent_zone_record" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
