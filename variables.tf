@@ -57,19 +57,10 @@ variable "alt_names" {
 }
 
 
-
-
-
-
-
 variable "generate_cert" {
   type    = bool
   default = false
 }
-
-
-
-
 
 
 variable "create_zone" {
@@ -92,6 +83,7 @@ variable "records" {
   #    ttl             = optional(number)
   #    allow_overwrite = optional(bool)
   #    records         = optional(list(any))
+  #    resource_id     = optional(string)
   #  }))
   default     = {}
   description = "Name of the hosted zone to contain this record (or specify `parent_zone_id`)"

@@ -39,6 +39,7 @@ variable "records" {
   #    ttl             = optional(number)
   #    allow_overwrite = optional(bool)
   #    records         = optional(list(any))
+  #    resource_id     = optional(string)
   #  }))
   default     = {}
   description = "Records."
