@@ -79,6 +79,7 @@ variable "records" {
   type = any
   #  type = map(object({
   #    name            = optional(string)
+  #    enabled         = optional(bool)
   #    type            = optional(string) # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
   #    ttl             = optional(number)
   #    allow_overwrite = optional(bool)

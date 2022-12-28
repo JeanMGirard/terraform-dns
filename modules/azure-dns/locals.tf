@@ -13,22 +13,23 @@ locals {
 
   empty_record = {
     name            = null
+    enabled         = true
     type            = null
     ttl             = null
     allow_overwrite = null
     records         = []
   }
-  txt_keys   = tolist([for k, v in var.records : k if try(upper(v["type"]) == "TXT", false)])
-  cname_keys = tolist([for k, v in var.records : k if try(upper(v["type"]) == "CNAME", false)])
-  a_keys     = tolist([for k, v in var.records : k if try(upper(v["type"]) == "A", false)])
-  aaaa_keys  = tolist([for k, v in var.records : k if try(upper(v["type"]) == "AAAA", false)])
-  caa_keys   = tolist([for k, v in var.records : k if try(upper(v["type"]) == "CAA", false)])
-  mx_keys    = tolist([for k, v in var.records : k if try(upper(v["type"]) == "MX", false)])
-  naptr_keys = tolist([for k, v in var.records : k if try(upper(v["type"]) == "NAPTR", false)])
-  ns_keys    = tolist([for k, v in var.records : k if try(upper(v["type"]) == "NS", false)])
-  ptr_keys   = tolist([for k, v in var.records : k if try(upper(v["type"]) == "PTR", false)])
-  soa_keys   = tolist([for k, v in var.records : k if try(upper(v["type"]) == "SOA", false)])
-  srv_keys   = tolist([for k, v in var.records : k if try(upper(v["type"]) == "SRV", false)])
+  txt_keys   = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "TXT", false)])
+  cname_keys = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CNAME", false)])
+  a_keys     = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "A", false)])
+  aaaa_keys  = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "AAAA", false)])
+  caa_keys   = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CAA", false)])
+  mx_keys    = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "MX", false)])
+  naptr_keys = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NAPTR", false)])
+  ns_keys    = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NS", false)])
+  ptr_keys   = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "PTR", false)])
+  soa_keys   = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SOA", false)])
+  srv_keys   = tolist([for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SRV", false)])
 
   records = { for ref, record in var.records : ref => merge(record, {
     name = try(coalesce(lookup(record, "name", null)), (substr(ref, 0, 1) == "@" ? "@" : ref))
