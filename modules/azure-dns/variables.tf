@@ -1,5 +1,3 @@
-
-
 variable "resource_group_name" {
   type    = string
   default = null
@@ -28,11 +26,9 @@ variable "zone_name" {
 }
 
 
-
-
 variable "records" {
 
-  type = any
+  type        = any
   #  type = map(object({
   #    name            = optional(string)
   #    type            = optional(string) # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
@@ -45,10 +41,14 @@ variable "records" {
   description = "Records."
 
   validation {
-    condition = alltrue([for record in values(var.records) : (can(lookup(record, "type", null))
-      ? contains(["A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"], lookup(record, "type", "CNAME"))
+    condition = alltrue([
+      for record in values(var.records) : (can(lookup(record, "type", null))
+      ? contains([
+        "A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"
+      ], lookup(record, "type", "CNAME"))
       : true
-    )])
+      )
+    ])
     error_message = "Invalid record type found, allowed values are A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT."
   }
 }

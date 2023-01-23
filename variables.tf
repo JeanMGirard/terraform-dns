@@ -73,10 +73,8 @@ variable "is_private" {
 }
 
 
-
-
 variable "records" {
-  type = any
+  type        = any
   #  type = map(object({
   #    name            = optional(string)
   #    enabled         = optional(bool)
@@ -89,10 +87,14 @@ variable "records" {
   default     = {}
   description = "Name of the hosted zone to contain this record (or specify `parent_zone_id`)"
   validation {
-    condition = alltrue([for record in values(var.records) : (can(lookup(record, "type", null))
-      ? contains(["A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"], lookup(record, "type", "CNAME"))
+    condition = alltrue([
+      for record in values(var.records) : (can(lookup(record, "type", null))
+      ? contains([
+        "A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"
+      ], lookup(record, "type", "CNAME"))
       : true
-    )])
+      )
+    ])
     error_message = "Invalid record type found, allowed values are A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT."
   }
 }

@@ -1,4 +1,3 @@
-
 #terraform {
 #  experiments      = [module_variable_optional_attrs]
 #}
@@ -24,7 +23,6 @@ resource "azurerm_dns_zone" "main" {
   resource_group_name = lookup(local.resource_group, "name", null)
   tags                = local.all_tags
 }
-
 
 
 # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
@@ -157,7 +155,8 @@ resource "azurerm_dns_srv_record" "main" {
 
 resource "azurerm_dns_txt_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
-  count               = local.is_public_zone ? length(local.txt_keys) : 0 # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
+  count               = local.is_public_zone ? length(local.txt_keys) : 0
+  # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
   name                = lookup(local.records[local.txt_keys[count.index]], "name", "")

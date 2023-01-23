@@ -19,8 +19,8 @@ output "result" {
 output "validation" {
   value = one([
     for cert in aws_acm_certificate.main : {
-      method = cert.validation_method
-      emails = cert.validation_emails
+      method  = cert.validation_method
+      emails  = cert.validation_emails
       records = [
         for record in aws_route53_record.dns_validation : {
           name   = record.name
