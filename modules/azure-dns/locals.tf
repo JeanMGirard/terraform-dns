@@ -18,37 +18,37 @@ locals {
     records         = []
   }
   txt_keys   = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "TXT", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "TXT", false)
   ])
   cname_keys = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CNAME", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CNAME", false)
   ])
   a_keys     = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "A", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "A", false)
   ])
   aaaa_keys  = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "AAAA", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "AAAA", false)
   ])
   caa_keys   = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CAA", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "CAA", false)
   ])
   mx_keys    = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "MX", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "MX", false)
   ])
   naptr_keys = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NAPTR", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NAPTR", false)
   ])
   ns_keys    = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NS", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "NS", false)
   ])
   ptr_keys   = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "PTR", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "PTR", false)
   ])
   soa_keys   = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SOA", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SOA", false)
   ])
   srv_keys   = tolist([
-    for k, v in var.records : kif try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SRV", false)
+    for k, v in var.records : k if try((lookup(v, "enabled", true) != false) && upper(v["type"]) == "SRV", false)
   ])
 
   records = {
