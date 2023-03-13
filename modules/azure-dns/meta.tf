@@ -12,7 +12,7 @@ module "meta" {
   meta   = var.meta
 }
 locals {
-  meta            = {for k, v in module.meta : k => v if v != null && v != ""}
+  meta            = { for k, v in module.meta : k => v if v != null && v != "" }
   env             = lookup(local.meta, "env", "")
   environment     = lookup(local.meta, "environment", "")
   region          = lookup(local.meta, "region", "")

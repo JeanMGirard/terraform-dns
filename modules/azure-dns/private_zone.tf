@@ -106,8 +106,8 @@ resource "azurerm_private_dns_srv_record" "main" {
 
 
 resource "azurerm_private_dns_txt_record" "main" {
-  depends_on          = [data.azurerm_private_dns_zone.main]
-  count               = local.is_private_zone ? length(local.txt_keys) : 0
+  depends_on = [data.azurerm_private_dns_zone.main]
+  count      = local.is_private_zone ? length(local.txt_keys) : 0
   # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
   zone_name           = local.out_zone_name
   resource_group_name = local.resource_group_name

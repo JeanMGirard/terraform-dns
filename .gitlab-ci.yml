@@ -1,0 +1,37 @@
+include:
+  - template: Terraform-Module.gitlab-ci.yml
+  - { project: Jean.M.Girard/devops/templates, file: tasks/terraform.yml }
+
+
+variables:
+  TERRAFORM_MODULE_DIR:	${CI_PROJECT_DIR}
+  TERRAFORM_MODULE_NAME: agnostic-dns
+  TERRAFORM_MODULE_SYSTEM: local
+
+stages:
+  #  - validate
+  - deploy
+
+
+#validate:
+#  stage: validate
+#  extends: [.terraform:validate]
+#
+#lint:
+#  stage: validate
+#  extends: [.terraform:lint]
+
+
+upload:
+  stage: deploy
+  image: curlimages/curl:latest
+  variables:
+    TERRAFORM_MODULE_VERSION: '${CI_COMMIT_TAG}'
+  script:
+    - TERRAFORM_MODULE_NAME=$(echo "${TERRAFORM_MODULE_NAME}" | tr " _" -) # module-name must not have spaces or underscores, so translate them to hyphens
+    - tar -vczf /tmp/${TERRAFORM_MODULE_NAME}-${TERRAFORM_MODULE_SYSTEM}-${TERRAFORM_MODULE_VERSION}.tgz -C ${TERRAFORM_MODULE_DIR} --exclude=./.git .
+    - 'curl --fail-with-body --location --header "JOB-TOKEN: ${CI_JOB_TOKEN}"
+         --upload-file /tmp/${TERRAFORM_MODULE_NAME}-${TERRAFORM_MODULE_SYSTEM}-${TERRAFORM_MODULE_VERSION}.tgz
+         ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/terraform/modules/${TERRAFORM_MODULE_NAME}/${TERRAFORM_MODULE_SYSTEM}/${TERRAFORM_MODULE_VERSION}/file'
+  rules:
+    - if: $CI_COMMIT_TAG

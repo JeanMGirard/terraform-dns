@@ -36,7 +36,7 @@ variable "alt_names" {
   default = []
 }
 variable "records" {
-  type        = any
+  type = any
   #  type = map(object({
   #    name            = string
   #    type            = string # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
