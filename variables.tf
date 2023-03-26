@@ -15,8 +15,9 @@ variable "resource_group_name" {
 # ===== Zone Info
 # ===============================================================================================
 variable "dns_provider" {
-  type    = string
-  default = "aws"
+  type        = string
+  default     = "aws"
+  description = "Cloud provider for the zone."
 
   validation {
     condition     = contains(["aws", "azure", "gcp"], lower(var.dns_provider))
