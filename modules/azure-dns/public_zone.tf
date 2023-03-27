@@ -1,4 +1,3 @@
-
 #terraform {
 #  experiments      = [module_variable_optional_attrs]
 #}
@@ -9,7 +8,7 @@ resource "azurerm_dns_ns_record" "parent" {
   count               = (local.is_public_zone && var.create_parent_zone_record) ? length(data.azurerm_dns_zone.parent) : 0
   zone_name           = one(data.azurerm_dns_zone.parent.*.name)
   resource_group_name = one(data.azurerm_dns_zone.parent.*.resource_group_name)
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = replace(var.zone_name, ".${one(data.azurerm_dns_zone.parent.*.name)}", "")
   ttl     = 3600
@@ -22,35 +21,37 @@ resource "azurerm_dns_zone" "main" {
   count               = local.create_public_zone ? 1 : 0
   name                = local.zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 }
 
 
-
 # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
+//noinspection ConflictingProperties
 resource "azurerm_dns_a_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.a_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
-  name    = lookup(local.records[local.a_keys[count.index]], "name", "")
-  ttl     = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.a_keys[count.index]], "records", [])
+  name               = lookup(local.records[local.a_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.a_keys[count.index]], "ttl", 300)
+  records            = lookup(local.records[local.a_keys[count.index]], "records", null)
+  target_resource_id = lookup(local.records[local.a_keys[count.index]], "resource_id", null)
 }
 
-
+//noinspection ConflictingProperties
 resource "azurerm_dns_aaaa_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.aaaa_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
-  name    = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
-  ttl     = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
-  records = lookup(local.records[local.aaaa_keys[count.index]], "records", [])
+  name               = lookup(local.records[local.aaaa_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.aaaa_keys[count.index]], "ttl", 300)
+  records            = lookup(local.records[local.aaaa_keys[count.index]], "records", null)
+  target_resource_id = lookup(local.records[local.aaaa_keys[count.index]], "resource_id", null)
 }
 
 resource "azurerm_dns_caa_record" "main" {
@@ -58,7 +59,7 @@ resource "azurerm_dns_caa_record" "main" {
   count               = local.is_public_zone ? length(local.caa_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
   name = lookup(local.records[local.caa_keys[count.index]], "name", "")
   ttl  = lookup(local.records[local.caa_keys[count.index]], "ttl", 3600)
@@ -73,16 +74,18 @@ resource "azurerm_dns_caa_record" "main" {
   }
 }
 
+//noinspection ConflictingProperties
 resource "azurerm_dns_cname_record" "main" {
   depends_on          = [data.azurerm_dns_zone.main]
   count               = local.is_public_zone ? length(local.cname_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
-  name   = lookup(local.records[local.cname_keys[count.index]], "name", "")
-  ttl    = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
-  record = one(lookup(local.records[local.cname_keys[count.index]], "records", []))
+  name               = lookup(local.records[local.cname_keys[count.index]], "name", "")
+  ttl                = lookup(local.records[local.cname_keys[count.index]], "ttl", 3600)
+  record             = one(lookup(local.records[local.cname_keys[count.index]], "records", null))
+  target_resource_id = lookup(local.records[local.cname_keys[count.index]], "resource_id", null)
 }
 
 resource "azurerm_dns_mx_record" "main" {
@@ -90,7 +93,7 @@ resource "azurerm_dns_mx_record" "main" {
   count               = local.is_public_zone ? length(local.mx_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
   name                = lookup(local.records[local.mx_keys[count.index]], "name", "")
 
   ttl = lookup(local.records[local.mx_keys[count.index]], "ttl", 3600)
@@ -109,7 +112,7 @@ resource "azurerm_dns_ns_record" "main" {
   count               = local.is_public_zone ? length(local.ns_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = lookup(local.records[local.ns_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.ns_keys[count.index]], "ttl", 3600)
@@ -121,7 +124,7 @@ resource "azurerm_dns_ptr_record" "main" {
   count               = local.is_public_zone ? length(local.ptr_keys) : 0
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
-  tags                = local.tags
+  tags                = local.all_tags
 
   name    = lookup(local.records[local.ptr_keys[count.index]], "name", "")
   ttl     = lookup(local.records[local.ptr_keys[count.index]], "ttl", 300)
@@ -134,7 +137,7 @@ resource "azurerm_dns_srv_record" "main" {
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
   name                = lookup(local.records[local.srv_keys[count.index]], "name", "")
-  tags                = local.tags
+  tags                = local.all_tags
 
   ttl = lookup(local.records[local.srv_keys[count.index]], "ttl", 300)
 
@@ -151,12 +154,13 @@ resource "azurerm_dns_srv_record" "main" {
 
 
 resource "azurerm_dns_txt_record" "main" {
-  depends_on          = [data.azurerm_dns_zone.main]
-  count               = local.is_public_zone ? length(local.txt_keys) : 0 # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
+  depends_on = [data.azurerm_dns_zone.main]
+  count      = local.is_public_zone ? length(local.txt_keys) : 0
+  # { for ref, record in local.records : ref => record if record["type"] == "TXT" }
   zone_name           = local.out_zone_name
   resource_group_name = lookup(local.resource_group, "name", null)
   name                = lookup(local.records[local.txt_keys[count.index]], "name", "")
-  tags                = local.tags
+  tags                = local.all_tags
 
   ttl = lookup(local.records[local.txt_keys[count.index]], "ttl", 3600)
 
