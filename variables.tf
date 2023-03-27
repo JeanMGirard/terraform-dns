@@ -54,11 +54,11 @@ variable "parent_zone_id" {
   default     = null
   description = "ID of the hosted zone to contain this record  (or specify `parent_zone_name`)"
 }
-variable "parent_zone_name" {
-  type        = string
-  default     = null
-  description = "ID of the hosted zone to contain this record  (or specify `parent_zone_name`)"
-}
+#variable "parent_zone_name" {
+#  type        = string
+#  default     = null
+#  description = "ID of the hosted zone to contain this record  (or specify `parent_zone_name`)"
+#}
 variable "parent_zone_provider" {
   type        = string
   default     = null
@@ -76,6 +76,8 @@ variable "generate_cert" {
   type    = bool
   default = false
 }
+
+
 variable "create_zone" {
   type    = bool
   default = true

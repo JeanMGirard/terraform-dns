@@ -8,6 +8,7 @@ output "resource_group_id" {
 output "resource_group_name" {
   value = lookup(local.resource_group, "name", null)
 }
+
 output "zone_name" {
   value = local.out_zone_name
 }
@@ -19,4 +20,7 @@ output "is_private" {
 }
 output "records" {
   value = local.records
+}
+output "name_servers" {
+  value = one(data.azurerm_dns_zone.main.*.name_servers)
 }

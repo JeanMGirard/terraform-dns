@@ -1,7 +1,7 @@
 # This is where you put your resource declaration
 
 
-resource "aws_route53_zone" "default" {
+resource "aws_route53_zone" "main" {
   count = local.enabled
   name  = var.zone_name
   # tags  = local.meta.tags
@@ -11,29 +11,30 @@ resource "aws_route53_zone" "default" {
 resource "aws_route53_record" "ns" {
   count   = local.parent_zone_enabled
   zone_id = local.parent_zone_id
-  name    = join("", aws_route53_zone.default.*.name)
+  name    = one(aws_route53_zone.main.*.name)
   type    = "NS"
   ttl     = "60"
-  records = aws_route53_zone.default[count.index].name_servers
+  records = aws_route53_zone.main[count.index].name_servers
 }
 resource "aws_route53_record" "soa" {
+  depends_on      = [aws_route53_zone.main]
   count           = local.enabled
   allow_overwrite = true
-  zone_id         = join("", aws_route53_zone.default.*.id)
-  name            = join("", aws_route53_zone.default.*.name)
+  zone_id         = one(aws_route53_zone.main.*.id)
+  name            = one(aws_route53_zone.main.*.name)
   type            = "SOA"
   ttl             = "30"
 
   records = [
-    format("%s. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400", aws_route53_zone.default[0].name_servers[0])
+    format("%s. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400", aws_route53_zone.main[0].name_servers[0])
   ]
 }
 
-# join("-", [join("", aws_route53_zone.default.*.name), each.key])
+# join("-", [join("", aws_route53_zone.main.*.name), each.key])
 
 resource "aws_route53_record" "records" {
   for_each        = var.records
-  zone_id         = join("", aws_route53_zone.default.*.id)
+  zone_id         = join("", aws_route53_zone.main.*.id)
   name            = lookup(each.value, "name", null)
   allow_overwrite = lookup(each.value, "allow_overwrite", null)
   type            = lookup(each.value, "type", null)
@@ -43,7 +44,7 @@ resource "aws_route53_record" "records" {
 
 module "cert" {
   count      = var.generate_cert ? 1 : 0
-  depends_on = [aws_route53_zone.default]
+  depends_on = [aws_route53_zone.main]
   source     = "../aws-tls-cert"
   zone_name  = var.zone_name
   alt_names  = var.alt_names
