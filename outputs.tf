@@ -3,16 +3,20 @@
 
 locals {
   dns_zones = concat(
-    (local.is_aws ? [{
-      zone_id   = one(module.aws.*.zone_id)
-      zone_name = one(module.aws.*.zone_name)
-      records   = var.records
-    }] : []),
-    (local.is_az ? [{
-      zone_id   = one(module.azure.*.zone_id)
-      zone_name = one(module.azure.*.zone_id)
-      records   = var.records
-    }] : [])
+    (local.is_aws ? [
+      {
+        zone_id   = one(module.aws.*.zone_id)
+        zone_name = one(module.aws.*.zone_name)
+        records   = var.records
+      }
+    ] : []),
+    (local.is_az ? [
+      {
+        zone_id   = one(module.azure.*.zone_id)
+        zone_name = one(module.azure.*.zone_id)
+        records   = var.records
+      }
+    ] : [])
   )
 }
 output "zone_id" {

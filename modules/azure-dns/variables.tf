@@ -1,5 +1,3 @@
-
-
 variable "resource_group_name" {
   type    = string
   default = null
@@ -19,15 +17,13 @@ variable "is_private" {
 }
 
 variable "zone_id" {
-  type = string
+  type    = string
   default = null
 }
 variable "zone_name" {
-  type = string
+  type    = string
   default = null
 }
-
-
 
 
 variable "records" {
@@ -39,15 +35,20 @@ variable "records" {
   #    ttl             = optional(number)
   #    allow_overwrite = optional(bool)
   #    records         = optional(list(any))
+  #    resource_id     = optional(string)
   #  }))
   default     = {}
   description = "Records."
 
   validation {
-    condition = alltrue([for record in values(var.records) : (can(lookup(record, "type", null))
-      ? contains(["A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"], lookup(record, "type", "CNAME"))
-      : true
-    )])
+    condition = alltrue([
+      for record in values(var.records) : (can(lookup(record, "type", null))
+        ? contains([
+          "A", "AAAA", "CAA", "CNAME", "DS", "MX", "NAPTR", "NS", "PTR", "SOA", "SPF", "SRV", "TXT"
+        ], lookup(record, "type", "CNAME"))
+        : true
+      )
+    ])
     error_message = "Invalid record type found, allowed values are A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT."
   }
 }
@@ -64,6 +65,6 @@ variable "parent_zone_name" {
 }
 
 variable "create_parent_zone_record" {
-  type        = bool
-  default     = true
+  type    = bool
+  default = true
 }
