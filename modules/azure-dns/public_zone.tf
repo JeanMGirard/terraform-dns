@@ -24,7 +24,6 @@ resource "azurerm_dns_zone" "main" {
   tags                = local.all_tags
 }
 
-
 # A, AAAA, CAA, CNAME, DS, MX, NAPTR, NS, PTR, SOA, SPF, SRV and TXT.
 //noinspection ConflictingProperties
 resource "azurerm_dns_a_record" "main" {

@@ -11,8 +11,13 @@ variable "meta" {
 }
 module "meta" {
   source = "git@github.com:JeanMGirard/terraform-meta.git"
-  meta   = var.meta
+  # source = "gitlab.com/Jean.M.Girard/meta/local"
+  # version = "1.0.0"
 }
+#module "meta" {
+#  source = "../../../libs/terraform/meta" # "git@github.com:JeanMGirard/terraform-meta.git"
+#  meta   = var.meta
+#}
 locals {
   meta = module.meta
 

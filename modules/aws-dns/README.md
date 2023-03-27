@@ -57,5 +57,5 @@
 | <a name="output_records"></a> [records](#output\_records) | DNS Records. |
 | <a name="output_zone_id"></a> [zone\_id](#output\_zone\_id) | Route53 DNS Zone ID |
 | <a name="output_zone_name"></a> [zone\_name](#output\_zone\_name) | Route53 DNS Zone name |
-| <a name="output_zone_name_servers"></a> [zone\_name\_servers](#output\_zone\_name\_servers) | Route53 DNS Zone Name Servers |
+| <a name="output_name_servers"></a> [zone\_name\_servers](#output\_zone\_name\_servers) | Route53 DNS Zone Name Servers |
 <!-- END_TF_DOCS -->
